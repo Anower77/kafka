@@ -1,22 +1,6 @@
-(Get-Content .\Makefile) -replace '^ {8}', "`t" | Set-Content .\Makefile
-
 # ============================================================
 # Kafka Practice - Makefile
 # ============================================================
-#
-# This Makefile provides shortcuts for common development
-# and Kafka management commands.
-#
-# Usage:
-#   make <command>
-#
-# Example:
-#   make up
-#   make topic
-#   make producer
-#   make consumer
-# ============================================================
-
 
 # ------------------------------------------------------------
 # Docker Commands
@@ -26,26 +10,21 @@
 up:
 	docker compose up -d
 
-
 # Stop and remove Kafka containers
 down:
 	docker compose down
-
 
 # Restart Kafka container
 restart:
 	docker compose restart
 
-
 # Show running Docker containers
 ps:
 	docker compose ps
 
-
 # Show Kafka container logs
 logs:
 	docker logs kafka -f
-
 
 # Follow Kafka logs in real time
 logs-follow:
@@ -66,14 +45,12 @@ topic:
 		--partitions 3 \
 		--replication-factor 1
 
-
 # List all Kafka topics
 topics:
 	docker exec -it kafka \
 		/opt/kafka/bin/kafka-topics.sh \
 		--list \
 		--bootstrap-server localhost:9092
-
 
 # Show detailed information about the orders topic
 topic-info:
@@ -82,7 +59,6 @@ topic-info:
 		--describe \
 		--topic orders \
 		--bootstrap-server localhost:9092
-
 
 # Delete the orders topic
 topic-delete:
@@ -101,16 +77,13 @@ topic-delete:
 venv:
 	python -m venv .venv
 
-
 # Install Python dependencies
 install:
 	pip install confluent-kafka
 
-
 # Run the Kafka producer
 producer:
 	python producer/producer.py
-
 
 # Run the Kafka consumer
 consumer:
@@ -128,7 +101,6 @@ console-producer:
 		--topic orders \
 		--bootstrap-server localhost:9092
 
-
 # Start a Kafka console consumer
 console-consumer:
 	docker exec -it kafka \
@@ -137,14 +109,12 @@ console-consumer:
 		--bootstrap-server localhost:9092 \
 		--from-beginning
 
-
 # Show consumer group information
 consumer-groups:
 	docker exec -it kafka \
 		/opt/kafka/bin/kafka-consumer-groups.sh \
 		--bootstrap-server localhost:9092 \
 		--list
-
 
 # Show details about our order consumer group
 consumer-group-info:
@@ -163,6 +133,11 @@ consumer-group-info:
 # WARNING: This removes Kafka's persisted data.
 clean:
 	docker compose down -v
+
+
+# ------------------------------------------------------------
+# Git Commands
+# ------------------------------------------------------------
 
 cm ?= Update code
 
@@ -210,4 +185,7 @@ help:
 	@echo ""
 	@echo "Cleanup:"
 	@echo "  make clean               Remove containers and volumes"
-
+	@echo ""
+	@echo "Git:"
+	@echo "  make git                 Commit and push changes"
+	@echo "  make git cm=\"message\"    Commit with custom message"
