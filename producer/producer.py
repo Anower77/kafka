@@ -39,7 +39,7 @@ producer = Producer(KAFKA_CONFIG)
 
 start_time = time.perf_counter()
 
-message_count = 100_00
+message_count = 100_000
 
 for order_id in range(1, message_count + 1):
 
